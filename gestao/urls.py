@@ -16,25 +16,43 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from financeiro import urls as financeiro_urls
-from financeiro.models import Entrada
+from financeiro.models import Entrada, Saida
 from financeiro import views
+from financeiro.serializers import Tipo_entradaSerializer
 
 from rest_framework import routers, serializers, viewsets
 
 class EntradaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
+        tipo_entrada = Tipo_entradaSerializer
         model = Entrada
-        fields = ['valor', 'descricao', 'data']
+        fields = ['url', 'id','valor', 'descricao', 'data']
+        extra_kwargs = {'tipo_entrada': {'read_only': True}}
+        
+class SaidaSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Saida
+        fields = ['url', 'id', 'valor', 'descricao', 'data']
+        extra_kwargs = {'tipo_saida': {'read_only': True}}
+
+
+
 
 
 class EntradaViewSet(viewsets.ModelViewSet):
     queryset = Entrada.objects.all()
     serializer_class = EntradaSerializer
 
+class SaidaViewSet(viewsets.ModelViewSet):
+    queryset = Saida.objects.all()
+    serializer_class = SaidaSerializer
+
 
 router = routers.DefaultRouter()
 router.register('entrada', EntradaViewSet)
+router.register('saida', SaidaViewSet)
 router.register('tipo_entrada', views.Tipo_EntradaViewSet)
+router.register('tipo_saida',views.Tipo_SaidaViewSet )
 
 urlpatterns = [
     path('', include(router.urls)),

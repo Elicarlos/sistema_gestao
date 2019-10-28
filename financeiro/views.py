@@ -1,15 +1,30 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Entrada, Saida, Tipo_entrada
+from .models import Entrada, Saida, Tipo_entrada, Tipo_saida
 from django.db.models import Sum
 
 from rest_framework import viewsets
-from .serializers import Tipo_entradaSerializer
+from .serializers import Tipo_entradaSerializer, Tipo_saidaSerializer, EntradaSerializer, SaidaSerializer
 
 
 class Tipo_EntradaViewSet(viewsets.ModelViewSet):
     queryset = Tipo_entrada.objects.all().order_by('-tipo_entrada')
     serializer_class = Tipo_entradaSerializer
+
+
+class Tipo_SaidaViewSet(viewsets.ModelViewSet):
+    queryset = Tipo_saida.objects.all().order_by('-tipo_saida')
+    serializer_class = Tipo_saidaSerializer
+
+
+class EntradaViewSet(viewsets.ModelViewSet):
+    queryset = Entrada.objects.all()
+    serializer_class = EntradaSerializer
+
+
+class SaidaViewSet(viewsets.ModelViewSet):
+    queryset = Saida.objects.all()
+    serializer_class = SaidaSerializer
 
 def relatorio_saida(request):
     pass
