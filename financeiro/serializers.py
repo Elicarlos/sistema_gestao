@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 
 
-class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
+class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['url', 'id', 'usuario', 'cpf', 'email']
@@ -17,12 +17,11 @@ class TipoDespezaSerializer(serializers.HyperlinkedModelSerializer):
 
 class TipoContaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        models = Tipo_conta
+        model = Tipo_conta
         fields = ['url','id', 'tipo_conta']
 
 class ContaSerializer(serializers.HyperlinkedModelSerializer):
-    usuario = UsuarioSerializer()
-    tipo_conta = TipoContaSerializer()
+    
     class Meta:        
         model = Conta
         fields = ['url', 'id', 'usuario', 'tipo_conta', 'descricao_conta', 'saldo']
@@ -42,7 +41,7 @@ class ReceitaSerializer(serializers.HyperlinkedModelSerializer):
 class DespezaSerializer(serializers.HyperlinkedModelSerializer):     
     class Meta:
         model = Despeza
-        fields = ['url','id', 'usuario', 'tipo_despeza','valor','descricao', 'data' ]
+        fields = ['url','id', 'usuario', 'conta', 'tipo_despeza','valor','descricao', 'data' ]
 
 
 

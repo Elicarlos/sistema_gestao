@@ -10,12 +10,12 @@ from .serializers import DespezaSerializer, UsuarioSerializer, ContaSerializer, 
 
 
 class TipoReceitaViewSet(viewsets.ModelViewSet):
-    queryset = Tipo_receita.objects.all().order_by('-tipo_entrada')
+    queryset = Tipo_receita.objects.all().order_by('-tipo_receita')
     serializer_class = TipoReceitaSerializer
 
 
 class TipoDespezaViewSet(viewsets.ModelViewSet):
-    queryset = Tipo_despeza.objects.all().order_by('-tipo_saida')
+    queryset = Tipo_despeza.objects.all().order_by('-tipo_despeza')
     serializer_class = TipoDespezaSerializer
 
 
@@ -39,7 +39,7 @@ class TipoContaViewSet(viewsets.ModelViewSet):
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer()
+    serializer_class = UsuarioSerializer
 
 # def relatorio_saida(request):
 #     pass

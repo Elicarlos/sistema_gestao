@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Usuario(models.Model):
-    usuario = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, related_name='usuario', on_delete=models.CASCADE)
     cpf = models.CharField(max_length=14)
     email = models.EmailField()
     
