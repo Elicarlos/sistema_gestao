@@ -1,29 +1,48 @@
-from .models import Tipo_entrada, Tipo_saida, Entrada, Saida
+from django.contrib.auth.models import User, Group
+from .models import Tipo_receita, Receita, Tipo_despeza, Despeza, Tipo_conta, Conta, Usuario
 from rest_framework import serializers
 
-class Tipo_entradaSerializer(serializers.HyperlinkedModelSerializer):
+
+
+class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Tipo_entrada
-        fields = ['tipo_entrada']
+        model = Usuario
+        fields = ['url', 'id', 'usuario', 'cpf', 'email']
 
-
-class  Tipo_saidaSerializer(serializers.HyperlinkedModelSerializer):
+class TipoDespezaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Tipo_saida
-        fields = ['tipo_saida']
+        model = Tipo_despeza
+        fields= ['url','id', 'tipo_despeza']
 
 
-class EntradaSerializer(serializers.HyperlinkedModelSerializer):
-    tipo_entrada = Tipo_entradaSerializer()
+class TipoContaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Entrada
-        fields = ['valor', 'descricao', 'data', 'tipo_entrada']
+        models = Tipo_conta
+        fields = ['url','id', 'tipo_conta']
 
+class ContaSerializer(serializers.HyperlinkedModelSerializer):
+    usuario = UsuarioSerializer()
+    tipo_conta = TipoContaSerializer()
+    class Meta:        
+        model = Conta
+        fields = ['url', 'id', 'usuario', 'tipo_conta', 'descricao_conta', 'saldo']
 
-class SaidaSerializer(serializers.HyperlinkedModelSerializer):
+class  TipoReceitaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Saida
-        fields = ['valor', 'descricao', 'data']
+        model = Tipo_receita
+        fields = ['url', 'id', 'tipo_receita']
+
+
+class ReceitaSerializer(serializers.HyperlinkedModelSerializer):   
+    class Meta:
+        model = Receita
+        fields = ['url','id', 'usuario', 'conta', 'tipo_receita','valor','descricao', 'data' ]
+
+
+class DespezaSerializer(serializers.HyperlinkedModelSerializer):     
+    class Meta:
+        model = Despeza
+        fields = ['url','id', 'usuario', 'tipo_despeza','valor','descricao', 'data' ]
 
 
 

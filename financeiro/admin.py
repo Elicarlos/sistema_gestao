@@ -1,9 +1,12 @@
 from django.contrib import admin
-from .models import Tipo_entrada, Tipo_saida, Entrada, Saida
+from .models import Conta, Tipo_conta, Usuario, Despeza, Tipo_despeza, Receita, Tipo_receita
 
 # Register your models here.
 
-admin.site.register(Tipo_entrada)
-admin.site.register(Tipo_saida)
-admin.site.register(Entrada)
-admin.site.register(Saida)
+admin.site.register(Conta)
+admin.site.register(Tipo_conta)
+admin.site.register(Usuario)
+admin.site.register(Despeza)
+admin.site.register(Tipo_despeza)
+admin.site.register(Receita)
+admin.site.register(Tipo_receita)

@@ -1,69 +1,84 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Entrada, Saida, Tipo_entrada, Tipo_saida
+from django.contrib.auth.models import User, Group
+from .models import Despeza, Tipo_despeza, Receita, Tipo_receita, Conta, Tipo_conta, Usuario
 from django.db.models import Sum
 
 from rest_framework import viewsets
-from .serializers import Tipo_entradaSerializer, Tipo_saidaSerializer, EntradaSerializer, SaidaSerializer
+from .serializers import TipoDespezaSerializer, TipoReceitaSerializer, ReceitaSerializer
+from .serializers import DespezaSerializer, UsuarioSerializer, ContaSerializer, TipoContaSerializer
 
 
-class Tipo_EntradaViewSet(viewsets.ModelViewSet):
-    queryset = Tipo_entrada.objects.all().order_by('-tipo_entrada')
-    serializer_class = Tipo_entradaSerializer
+class TipoReceitaViewSet(viewsets.ModelViewSet):
+    queryset = Tipo_receita.objects.all().order_by('-tipo_entrada')
+    serializer_class = TipoReceitaSerializer
 
 
-class Tipo_SaidaViewSet(viewsets.ModelViewSet):
-    queryset = Tipo_saida.objects.all().order_by('-tipo_saida')
-    serializer_class = Tipo_saidaSerializer
+class TipoDespezaViewSet(viewsets.ModelViewSet):
+    queryset = Tipo_despeza.objects.all().order_by('-tipo_saida')
+    serializer_class = TipoDespezaSerializer
 
 
-class EntradaViewSet(viewsets.ModelViewSet):
-    queryset = Entrada.objects.all()
-    serializer_class = EntradaSerializer
+class ReceitaViewSet(viewsets.ModelViewSet):
+    queryset = Receita.objects.all()
+    serializer_class = ReceitaSerializer
 
 
-class SaidaViewSet(viewsets.ModelViewSet):
-    queryset = Saida.objects.all()
-    serializer_class = SaidaSerializer
-
-def relatorio_saida(request):
-    pass
+class DespezaViewSet(viewsets.ModelViewSet):
+    queryset = Despeza.objects.all()
+    serializer_class = DespezaSerializer
 
 
+class ContaViewSet(viewsets.ModelViewSet):
+    queryset = Conta.objects.all()
+    serializer_class = ContaSerializer
 
+class TipoContaViewSet(viewsets.ModelViewSet):
+    queryset = Tipo_conta.objects.all()
+    serializer_class = TipoContaSerializer
 
-def entrada(request):
-    entradas = Entrada.objects.all()
-    total_entrada = Entrada.objects.aggregate(valor=Sum('valor'))
-    total_entrada = total_entrada['valor']
-    return render(request, 'entrada.html',{'total_entrada': total_entrada})
+class UsuarioViewSet(viewsets.ModelViewSet):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer()
 
-def relatorio_entrada_familiar(request):
-    pass
-
-
-def relatorio_entrada_intervalo(request):
-    pass
-
-def relatorio_entrada_individual(request):
-    pass
-
-def relatorio_entrada_individual_intervalo(request):
-    pass
+# def relatorio_saida(request):
+#     pass
 
 
 
-def saida(request):
-    saidas = Saida.objects.all()
-    total_saida = Saida.objects.aggregate(valor=Sum('valor'))
-    total_saida = total_saida['valor']
-    return render(request, 'saida.html', {'total_saida': total_saida})
 
-def saldo_familiar(request):
-    total_entrada = Entrada.objects.aggregate(valor=Sum('valor'))
-    total_saida = Saida.objects.aggregate(valor=Sum('valor'))
-    saldo = total_entrada['valor'] - total_saida['valor']
-    return render(request, 'saldo.html', {'saldo': saldo})
+# def entrada(request):
+#     entradas = Entrada.objects.all()
+#     total_entrada = Entrada.objects.aggregate(valor=Sum('valor'))
+#     total_entrada = total_entrada['valor']
+#     return render(request, 'entrada.html',{'total_entrada': total_entrada})
 
-def saldo_individual(request):
-    pass
+# def relatorio_entrada_familiar(request):
+#     pass
+
+
+# def relatorio_entrada_intervalo(request):
+#     pass
+
+# def relatorio_entrada_individual(request):
+#     pass
+
+# def relatorio_entrada_individual_intervalo(request):
+#     pass
+
+
+
+# def saida(request):
+#     saidas = Saida.objects.all()
+#     total_saida = Saida.objects.aggregate(valor=Sum('valor'))
+#     total_saida = total_saida['valor']
+#     return render(request, 'saida.html', {'total_saida': total_saida})
+
+# def saldo_familiar(request):
+#     total_entrada = Entrada.objects.aggregate(valor=Sum('valor'))
+#     total_saida = Saida.objects.aggregate(valor=Sum('valor'))
+#     saldo = total_entrada['valor'] - total_saida['valor']
+#     return render(request, 'saldo.html', {'saldo': saldo})
+
+# def saldo_individual(request):
+#     pass

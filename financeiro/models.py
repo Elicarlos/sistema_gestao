@@ -1,55 +1,89 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
 
-class Tipo_entrada(models.Model):
-    tipo_entrada = models.CharField(max_length=30)
-    class Meta:
-        verbose_name = 'Tipo_entrada'
+
+class Usuario(models.Model):
+    usuario = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
+    cpf = models.CharField(max_length=14)
+    email = models.EmailField()
+    
     def __str__(self):
-        return str(self.tipo_entrada)
+        return str(self.usuario)
+   
+class Tipo_conta(models.Model):
+    tipo_conta = models.CharField(max_length=50)
 
-
-class Tipo_saida(models.Model):
-    tipo_saida = models.CharField(max_length=30)
-    class Meta:
-        verbose_name = 'Tipo_saida'
     def __str__(self):
-        return str(self.tipo_saida)
+        return str(self.tipo_conta)
+
+
+class Conta(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    tipo_conta = models.ForeignKey(Tipo_conta, on_delete=models.PROTECT)    
+    descricao_conta = models.CharField(max_length=50)
+    saldo = models.FloatField()
+    def __str__(self):
+        return str(self.descricao_conta)
+
+
+class Tipo_receita(models.Model):
+    tipo_receita = models.CharField(max_length=30)
+    class Meta:
+        verbose_name = 'tipo_receita'
+    def __str__(self):
+        return str(self.tipo_receita)
+
+
+class Tipo_despeza(models.Model):
+    tipo_despeza = models.CharField(max_length=30)
+    class Meta:
+        verbose_name = 'tipo_despeza'
+    def __str__(self):
+        return str(self.tipo_despeza)
 
     
-class Entrada(models.Model):
-    tipo_entrada = models.ForeignKey(Tipo_entrada, on_delete=models.PROTECT)
+class Receita(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    tipo_receita = models.ForeignKey(Tipo_receita, on_delete=models.PROTECT)
+    conta = models.ForeignKey(Conta, on_delete=models.PROTECT)
     valor = models.FloatField()
     descricao = models.TextField()
     data = models.DateField()     
     class Meta:
-        verbose_name = 'Entrada'
-        verbose_name_plural = 'Entradas'
+        verbose_name = 'Receita'
+        verbose_name_plural = 'Receitas'
     def __str__(self):
-        return str(self.tipo_entrada)
+        return str(self.descricao)
 
-    def total_entrada(self):
-        total_entrada += self.valor
-        print(total_entrada)
-        return total_entrada   
+    # def total_entrada(self):
+    #     total_entrada += self.valor
+    #     print(total_entrada)
+    #     return total_entrada   
 
 
-class Saida(models.Model):
-    tipo_saida = models.ForeignKey(Tipo_saida, on_delete=models.PROTECT)
+class Despeza(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    tipo_despeza = models.ForeignKey(Tipo_despeza, on_delete=models.PROTECT)
+    conta = models.ForeignKey(Conta, on_delete=models.PROTECT)
     valor = models.FloatField()
     descricao = models.TextField()
     data = models.DateField()
     class Meta:
-        verbose_name = 'Saida'
-        verbose_name_plural = 'Saidas'
+        verbose_name = 'Despeza'
+        verbose_name_plural = 'Despezas'
     def __str__(self):
-        return str(self.tipo_saida)
+        return str(self.tipo_despeza)
 
-    def total_saida(self):
-        total_saida += self.tipo_saida
-        print(total_saida)
-        return total_saida
+    # def total_saida(self):
+    #     total_saida += self.tipo_despezas
+    #     print(total_saida)
+    #     return total_saida
+
+
+
+
+    
     
   
 
