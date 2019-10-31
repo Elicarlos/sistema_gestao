@@ -5,43 +5,54 @@ from rest_framework import serializers
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Usuario
-        fields = ['url', 'id', 'usuario', 'cpf', 'email']
+        fields = ['usuario', 'cpf', 'email']
 
 class TipoDespezaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tipo_despeza
-        fields= ['url','id', 'tipo_despeza']
+        fields= ['tipo_despeza']
 
 
 class TipoContaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tipo_conta
-        fields = ['url','id', 'tipo_conta']
+        fields = ['tipo_conta']
 
 class ContaSerializer(serializers.HyperlinkedModelSerializer):
+    usuario = UsuarioSerializer().field_name="usuario"
+    tipo_conta = TipoContaSerializer().field_name="tipo_conta"
     
     class Meta:        
         model = Conta
-        fields = ['url', 'id', 'usuario', 'tipo_conta', 'descricao_conta', 'saldo']
+        fields = ['tipo_conta', 'usuario',  'descricao_conta', 'saldo']
 
 class  TipoReceitaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tipo_receita
-        fields = ['url', 'id', 'tipo_receita']
+        fields = ['tipo_receita']
 
 
-class ReceitaSerializer(serializers.HyperlinkedModelSerializer):   
+class ReceitaSerializer(serializers.HyperlinkedModelSerializer):
+    usuario = UsuarioSerializer().field_name="usuario"
+    tipo_receita = TipoReceitaSerializer().field_name="tipo_receita"
+    conta = TipoContaSerializer().field_name="tipo_conta"
+
     class Meta:
         model = Receita
-        fields = ['url','id', 'usuario', 'conta', 'tipo_receita','valor','descricao', 'data' ]
+        fields = ['conta', 'usuario', 'tipo_receita','valor','descricao', 'data' ]
 
 
-class DespezaSerializer(serializers.HyperlinkedModelSerializer):     
+class DespezaSerializer(serializers.HyperlinkedModelSerializer):  
+    usuario = UsuarioSerializer().field_name="usuario"
+    tipo_despeza = TipoDespezaSerializer().field_name="tipo_despeza"
+    conta = TipoContaSerializer().field_name="conta"
+
     class Meta:
         model = Despeza
-        fields = ['url','id', 'usuario', 'conta', 'tipo_despeza','valor','descricao', 'data' ]
+        fields = ['conta', 'usuario', 'tipo_despeza','valor','descricao', 'data' ]
 
 
 

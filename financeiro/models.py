@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from financeiro.transacoes import receber_receita, pagar_despeza
 
 
 

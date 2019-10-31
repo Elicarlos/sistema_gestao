@@ -48,7 +48,8 @@
         <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th scope="col">Codigo</th>
+                    <th scope="col">Tipo de Receita</th>
+                    <th scope="col">Conta</th>
                     <th scope="col">Descricao</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Data</th>
@@ -56,7 +57,9 @@
                 </thead>
                 <tbody>
                   <tr  v-for=" info in info">
-                    <th scope="row">{{ info.id }}</th>
+                    <th scope="row">{{ info.tipo_receita }}</th>
+                    <td>{{ info.tipo_receita }}</td>
+                    <td>{{ info.conta }}</td>
                     <td>{{ info.descricao }}</td>
                     <td>{{ info.valor }}</td>
                     <td>{{ info.data }}</td>
@@ -81,7 +84,7 @@
             },
             mounted(){
                 axios
-                    .get("http://localhost:8000/entrada/")
+                    .get("http://127.0.0.1:8000/despezas/")
                     .then(response => (this.info = response.data.results))
             }
         })
