@@ -1,58 +1,84 @@
 from django.contrib.auth.models import User, Group
-from .models import Tipo_receita, Receita, Tipo_despeza, Despeza, Tipo_conta, Conta, Usuario
+from .models import Tipo_receita, Receita, Tipo_despesa, Despesa, Tipo_conta, Conta, Usuario
 from rest_framework import serializers
 
 
 
-class UsuarioSerializer(serializers.ModelSerializer):
-    
+
+#  É SÓ DESCOMENTAR PARA FUNCIONAR 1 DESBLOQUEIO
+
+# class UsuarioSerializer(serializers.Serializer):
+#     id = serializers.IntegerField(read_only=True)
+#     usuario = serializers.CharField(required=False, allow_blank=True, max_length=100)
+#     cpf = serializers.CharField(required=True, allow_blank=True, max_length=15)
+#     email = serializers.EmailField(required=True)
+
+#     def create(self, validate_data):
+#         #Cria e retorna um novo usuario
+#         return Usuario.objects.create(**validate_data)
+
+#     def update(self, instance, validate_data):
+#         # Atualiza e retorna um Usuario Existente
+#         instance.usuario = validate_data.get('usuario', instance.usuario)
+#         instance.cpf = validate_data.get('cpf', instance.cpf)
+#         instance.email = validate_data.get('email', instance.email)
+#         instance.save()
+#         return instance
+
+class UsuarioSerializer(serializers.ModelSerializer):  
+    # usuarios = serializers.HyperlinkedRelatedField(
+    #     many=True, view_name='users-detail', read_only=True)
+  
+   
+    # highlight = serializers.HyperlinkedIdentityField(
+    #     view_name='usuario-highlight', format='html')
     class Meta:
         model = Usuario
-        fields = ['usuario', 'cpf', 'email']
+        fields = ('url', 'id', 'usuario', 'cpf', 'email')
 
-class TipoDespezaSerializer(serializers.HyperlinkedModelSerializer):
+class TipoDespesaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Tipo_despeza
-        fields= ['tipo_despeza']
+        model = Tipo_despesa
+        fields= ['id', 'tipo_despesa']
 
 
 class TipoContaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tipo_conta
-        fields = ['tipo_conta']
+        fields = ['id', 'tipo_conta']
 
 class ContaSerializer(serializers.HyperlinkedModelSerializer):
-    usuario = UsuarioSerializer().field_name="usuario"
-    tipo_conta = TipoContaSerializer().field_name="tipo_conta"
-    
+    owner = serializers.ReadOnlyField(source='owner.usuario')
+    usuario = UsuarioSerializer("many=False")
+    tipo_conta = TipoContaSerializer("many=False")    
     class Meta:        
         model = Conta
-        fields = ['tipo_conta', 'usuario',  'descricao_conta', 'saldo']
+        fields = ('id','tipo_conta','owner', 'usuario', 'descricao_conta', 'saldo')
 
 class  TipoReceitaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tipo_receita
-        fields = ['tipo_receita']
+        fields = ['id', 'tipo_receita']
 
 
 class ReceitaSerializer(serializers.HyperlinkedModelSerializer):
-    usuario = UsuarioSerializer().field_name="usuario"
-    tipo_receita = TipoReceitaSerializer().field_name="tipo_receita"
-    conta = TipoContaSerializer().field_name="tipo_conta"
+    usuario = UsuarioSerializer("many=False")
+    tipo_receita = TipoReceitaSerializer("many=False")
+    conta = TipoContaSerializer("many=False")
 
     class Meta:
         model = Receita
         fields = ['conta', 'usuario', 'tipo_receita','valor','descricao', 'data' ]
 
 
-class DespezaSerializer(serializers.HyperlinkedModelSerializer):  
-    usuario = UsuarioSerializer().field_name="usuario"
-    tipo_despeza = TipoDespezaSerializer().field_name="tipo_despeza"
-    conta = TipoContaSerializer().field_name="conta"
+class DespesaSerializer(serializers.ModelSerializer):  
+    # usuario = UsuarioSerializer("many=False")
+    # tipo_despesa = TipoDespesaSerializer("many=False")
+    # conta = TipoContaSerializer("many=False")
 
     class Meta:
-        model = Despeza
-        fields = ['conta', 'usuario', 'tipo_despeza','valor','descricao', 'data' ]
+        model = Despesa
+        fields = ['id', 'valor','descricao', 'data' ]
 
 
 

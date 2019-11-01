@@ -7,14 +7,16 @@ from django.contrib.auth.models import User
 router = routers.DefaultRouter()
 router.register('usuarios', views.UsuarioViewSet)
 router.register('receitas', views.ReceitaViewSet)
-router.register('despezas', views.DespezaViewSet)
+router.register('despesas', views.DespesaViewSet)
 router.register('contas', views.ContaViewSet)
 router.register('tipo-contas', views.TipoContaViewSet)
 router.register('tipo-receitas', views.TipoReceitaViewSet)
-router.register('tipo-despezas', views.TipoDespezaViewSet)
+router.register('tipo-despesas', views.TipoDespesaViewSet)
 
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('despezas/', views.despesas_list),
+    path('despezas/<int:pk>/', views.despesas_detail),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),    
 ]

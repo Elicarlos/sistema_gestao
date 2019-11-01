@@ -10,17 +10,51 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-
-
 <div id="app">  
-    <div v-for="info in info">
-            {{ info }}
+    <div class="container-fluido">
+            <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    </ol>
+                  </nav>    
+        <h1 style="text-align: center; margin-bottom: 30px; margin-top: 30px;">Lista de Sobreviventes </h1>     
+            <table class="table" style="margin-top: 30px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Idade</th>
+                    <th scope="col">Genero</th>
+                    <th scope="col">Infectado</th>
+                    <th scope="col">flags</th>
+                    <th scope="col">Latitude</th>
+                    <th scope="col">Longitude</th>
+                    <th scope="col">Agua</th>
+                    <th scope="col">Comida</th>
+                    <th scope="col">Ponts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="info in info">        
+                    <th scope="row">{{ info.name }}  </th>
+                    <td>{{ info.age }}</td>
+                    <td>{{ info.gender }}</td>
+                    <td>{{ info.infected}}</td>
+                    <td>{{ info.flags}}</td>
+                    <td>{{ info.location.latitude }}</td>
+                    <td>{{ info.location.longitude }}</td>
+                    <td>{{ info.inventory.water }}</td>
+                    <td>{{ info.inventory.food }}</td>
+                    <td>{{ info.inventory.get_points }}</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
     </div>
         
       
 
 
-</div>
+
   
 
 
@@ -35,7 +69,7 @@
             },
             mounted(){
                 axios
-                    .get('http://127.0.0.1:8000/despezas/')
+                    .get("http://localhost:8000/survivors/")
                     .then(response => (this.info = response.data.results))                    
                     .catch(error => console.log(error))
             }
@@ -43,6 +77,6 @@
            
     
     </script>
-    
+</div>    
 </body>
 </html>

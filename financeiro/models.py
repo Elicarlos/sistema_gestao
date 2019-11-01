@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from financeiro.transacoes import receber_receita, pagar_despeza
+
 
 
 
@@ -23,10 +23,11 @@ class Conta(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
     tipo_conta = models.ForeignKey(Tipo_conta, on_delete=models.PROTECT)    
     descricao_conta = models.CharField(max_length=50)
-    saldo = models.FloatField()
+    saldo = models.FloatField(default=0)
     def __str__(self):
         return str(self.descricao_conta)
 
+    
 
 class Tipo_receita(models.Model):
     tipo_receita = models.CharField(max_length=30)
@@ -36,12 +37,13 @@ class Tipo_receita(models.Model):
         return str(self.tipo_receita)
 
 
-class Tipo_despeza(models.Model):
-    tipo_despeza = models.CharField(max_length=30)
+
+class Tipo_despesa(models.Model):
+    tipo_despesa = models.CharField(max_length=30)
     class Meta:
-        verbose_name = 'tipo_despeza'
+        verbose_name = 'tipo_despesa'
     def __str__(self):
-        return str(self.tipo_despeza)
+        return str(self.tipo_despesa)
 
     
 class Receita(models.Model):
@@ -50,10 +52,12 @@ class Receita(models.Model):
     conta = models.ForeignKey(Conta, on_delete=models.PROTECT)
     valor = models.FloatField()
     descricao = models.TextField()
-    data = models.DateField()     
+    data = models.DateTimeField(auto_now_add=True)     
     class Meta:
         verbose_name = 'Receita'
         verbose_name_plural = 'Receitas'
+        
+
     def __str__(self):
         return str(self.descricao)
 
@@ -63,21 +67,22 @@ class Receita(models.Model):
     #     return total_entrada   
 
 
-class Despeza(models.Model):
+class Despesa(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
-    tipo_despeza = models.ForeignKey(Tipo_despeza, on_delete=models.PROTECT)
+    tipo_despesa = models.ForeignKey(Tipo_despesa, on_delete=models.PROTECT)
     conta = models.ForeignKey(Conta, on_delete=models.PROTECT)
     valor = models.FloatField()
     descricao = models.TextField()
-    data = models.DateField()
+    data = models.DateTimeField(auto_now_add=True)
     class Meta:
-        verbose_name = 'Despeza'
-        verbose_name_plural = 'Despezas'
+        verbose_name = 'Despesa'
+        verbose_name_plural = 'Despesas'      
+        
     def __str__(self):
-        return str(self.tipo_despeza)
+        return str(self.tipo_despesa)
 
     # def total_saida(self):
-    #     total_saida += self.tipo_despezas
+    #     total_saida += self.tipo_despesas
     #     print(total_saida)
     #     return total_saida
 
