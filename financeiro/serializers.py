@@ -25,6 +25,15 @@ from rest_framework import serializers
 #         instance.save()
 #         return instance
 
+
+class UserSerializer(serializers.ModelSerializer):
+    usuarios = serializers.PrimaryKeyRelatedField(many=True, queryset=Usuario.objects.all())
+
+    class Meta:
+        model = Usuario
+        fields = ['id', 'usuario', 'usuarios']
+
+
 class UsuarioSerializer(serializers.ModelSerializer):  
     # usuarios = serializers.HyperlinkedRelatedField(
     #     many=True, view_name='users-detail', read_only=True)
@@ -34,7 +43,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     #     view_name='usuario-highlight', format='html')
     class Meta:
         model = Usuario
-        fields = ('url', 'id', 'usuario', 'cpf', 'email')
+        fields = ['id', 'usuario', 'cpf', 'email']
 
 class TipoDespesaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -47,13 +56,12 @@ class TipoContaSerializer(serializers.HyperlinkedModelSerializer):
         model = Tipo_conta
         fields = ['id', 'tipo_conta']
 
-class ContaSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.usuario')
-    usuario = UsuarioSerializer("many=False")
+class ContaSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.usuario')    
     tipo_conta = TipoContaSerializer("many=False")    
     class Meta:        
         model = Conta
-        fields = ('id','tipo_conta','owner', 'usuario', 'descricao_conta', 'saldo')
+        fields = ['id','tipo_conta','owner', 'descricao_conta', 'saldo']
 
 class  TipoReceitaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -71,14 +79,14 @@ class ReceitaSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['conta', 'usuario', 'tipo_receita','valor','descricao', 'data' ]
 
 
-class DespesaSerializer(serializers.ModelSerializer):  
-    # usuario = UsuarioSerializer("many=False")
+class DespesaSerializer(serializers.HyperlinkedModelSerializer):  
+    usuario = UsuarioSerializer("many=False")
     # tipo_despesa = TipoDespesaSerializer("many=False")
     # conta = TipoContaSerializer("many=False")
 
     class Meta:
         model = Despesa
-        fields = ['id', 'valor','descricao', 'data' ]
+        fields = ['id', 'usuario', 'valor','descricao', 'data' ]
 
 
 

@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Usuario(models.Model):
-    usuario = models.OneToOneField(User, related_name='usuario', on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, related_name='usuario', on_delete=models.CASCADE)    
     cpf = models.CharField(max_length=14)
     email = models.EmailField()
     
@@ -16,16 +16,16 @@ class Tipo_conta(models.Model):
     tipo_conta = models.CharField(max_length=50)
 
     def __str__(self):
-        return str(self.tipo_conta)
+        return self.tipo_conta
 
 
 class Conta(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    owner = models.ForeignKey('auth.User', related_name='Usuario', on_delete=models.CASCADE)
     tipo_conta = models.ForeignKey(Tipo_conta, on_delete=models.PROTECT)    
     descricao_conta = models.CharField(max_length=50)
     saldo = models.FloatField(default=0)
     def __str__(self):
-        return str(self.descricao_conta)
+        return self.descricao_conta
 
     
 
